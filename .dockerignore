@@ -1,0 +1,30 @@
+# Flutter files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+ios/
+android/
+web/
+linux/
+macos/
+windows/
+lib/
+test/
+
+# Git
+.git/
+.gitignore
+
+# Documentación
+*.md
+README.md
+GUIA_*.md
+
+# Otros archivos innecesarios para el backend
+pubspec.yaml
+pubspec.lock
+analysis_options.yaml

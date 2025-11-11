@@ -1,11 +1,9 @@
 services:
   - type: web
     name: miobrafacil-api
-    env: docker
-    runtime: php
-    rootDir: backend
-    buildCommand: echo "No build needed"
-    startCommand: php -S 0.0.0.0:$PORT -t .
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: PHP_VERSION
-        value: "8.2"
+      - key: PORT
+        value: "10000"
