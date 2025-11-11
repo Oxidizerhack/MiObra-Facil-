@@ -66,6 +66,18 @@ class DashboardScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Dashboard'),
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.cloud_sync),
+            tooltip: 'Sincronización Cloud',
+            onPressed: () => context.go('/sync'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.storage),
+            tooltip: 'Ver Base de Datos',
+            onPressed: () => context.go('/database_viewer'),
+          ),
+        ],
       ),
       body: projects.isEmpty
           ? Center(
@@ -128,6 +140,14 @@ class DashboardScreen extends StatelessWidget {
         return 'Cochabamba';
       case 'santaCruz':
         return 'Santa Cruz';
+      case 'sucre':
+        return 'Sucre';
+      case 'oruro':
+        return 'Oruro';
+      case 'tarija':
+        return 'Tarija';
+      case 'potosi':
+        return 'Potosí';
       default:
         return regionCode;
     }

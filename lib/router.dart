@@ -6,6 +6,8 @@ import 'screens/project_detail_screen.dart';
 import 'screens/select_item_screen.dart';
 import 'screens/calculator_screen.dart';
 import 'screens/edit_project_screen.dart';
+import 'screens/database_viewer_screen.dart';
+import 'screens/sync_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -19,6 +21,18 @@ final GoRouter router = GoRouter(
           path: 'add_project',
           builder: (BuildContext context, GoRouterState state) {
             return const AddProjectScreen();
+          },
+        ),
+        GoRoute(
+          path: 'database_viewer',
+          builder: (BuildContext context, GoRouterState state) {
+            return const DatabaseViewerScreen();
+          },
+        ),
+        GoRoute(
+          path: 'sync',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SyncScreen();
           },
         ),
         GoRoute(

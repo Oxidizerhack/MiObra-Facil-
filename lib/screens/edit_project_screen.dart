@@ -93,6 +93,10 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                   DropdownMenuItem(value: 'laPaz', child: Text('La Paz')),
                   DropdownMenuItem(value: 'cochabamba', child: Text('Cochabamba')),
                   DropdownMenuItem(value: 'santaCruz', child: Text('Santa Cruz')),
+                  DropdownMenuItem(value: 'sucre', child: Text('Sucre')),
+                  DropdownMenuItem(value: 'oruro', child: Text('Oruro')),
+                  DropdownMenuItem(value: 'tarija', child: Text('Tarija')),
+                  DropdownMenuItem(value: 'potosi', child: Text('Potosí')),
                 ],
                 onChanged: (value) {
                   setState(() {

@@ -7,9 +7,9 @@ class ApiConfig {
   /// Para obtenerla: ipconfig (Windows) o ifconfig (Mac/Linux)
   static const String LOCAL_API = 'http://192.168.1.10/miobrafacil/api';
   
-  /// URL para producción (filess.io API)
-  /// ✅ Configurado con tu API de filess.io
-  static const String CLOUD_API = 'https://miobrafacil.filess.io/api';
+  /// URL para producción (Railway + filess.io MySQL)
+  /// ✅ Configurado con Railway hosting
+  static const String CLOUD_API = 'https://miobra-facil-production.up.railway.app';
   
   /// URL base que se usará en la app
   /// true = usa CLOUD_API (producción - filess.io)

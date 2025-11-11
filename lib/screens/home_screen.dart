@@ -15,6 +15,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
+  String _getRegionName(String regionKey) {
+    const regionNames = {
+      'laPaz': 'La Paz',
+      'cochabamba': 'Cochabamba',
+      'santaCruz': 'Santa Cruz',
+      'sucre': 'Sucre',
+      'oruro': 'Oruro',
+      'tarija': 'Tarija',
+      'potosi': 'Potosí',
+    };
+    return regionNames[regionKey] ?? regionKey;
+  }
+
   void _showDeleteDialog(BuildContext context, String projectId, String projectName, ProjectProvider provider) {
     showDialog(
       context: context,
@@ -77,13 +90,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 value: 'santaCruz',
                 child: Text('Santa Cruz'),
               ),
+              const PopupMenuItem<String>(
+                value: 'sucre',
+                child: Text('Sucre'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'oruro',
+                child: Text('Oruro'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'tarija',
+                child: Text('Tarija'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'potosi',
+                child: Text('Potosí'),
+              ),
             ],
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
                   const Icon(Icons.location_on),
-                  Text(regionProvider.selectedRegion),
+                  Text(_getRegionName(regionProvider.selectedRegion)),
                 ],
               ),
             ),
