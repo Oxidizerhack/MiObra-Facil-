@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API filess.io - Mi Obra Fácil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .config-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .config-info h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .config-info code {
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            word-break: break-all;
+        }
+        
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+        
+        .result h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .result pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status {
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Test API filess.io</h1>
+        <p class="subtitle">Prueba la conexión de Mi Obra Fácil con filess.io</p>
+        
+        <div class="config-info">
+            <h3>📝 Configuración Actual</h3>
+            <p><strong>API URL:</strong> <code id="apiUrl">Cargando...</code></p>
+            <p><strong>Database:</strong> <code>miobrafacildb</code></p>
+            <p><strong>Host:</strong> <code>y27ad9.h.filess.io</code></p>
+        </div>
+        
+        <div class="btn-group">
+            <button onclick="testHealth()">🏥 Test Health</button>
+            <button onclick="getProjects()">📋 Get Projects</button>
+            <button onclick="createTestProject()">➕ Create Test Project</button>
+            <button onclick="clearResults()">🗑️ Clear Results</button>
+        </div>
+        
+        <div id="status"></div>
+        <div id="result" class="result" style="display: none;">
+            <h3>Resultado:</h3>
+            <pre id="resultContent"></pre>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURACIÓN ====================
+        
+        // 🔧 CAMBIA ESTA URL CON LA TUYA REAL
+        // Ejemplo: https://miobrafacildb.filess.io/api.php
+        const API_URL = 'https://miobrafacildb.filess.io/api.php';
+        
+        // Tu API Key de filess.io
+        const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxZWRmMmE3LTExOTItNGJmMS05YzdmLTA5M2IxNmJhZjU1ZSIsImlhdCI6MTc2Mjg4NTU5MywiZXhwIjozMTczMDczMjc5OTN9.vVtHWhP9l6aY5x7-tSu6SC3E3Hu-d13oQVcHmaSwYhY';
+        
+        // Mostrar URL en la página
+        document.getElementById('apiUrl').textContent = API_URL;
+        
+        // ==================== FUNCIONES ====================
+        
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+            statusDiv.style.display = 'block';
+        }
+        
+        function showResult(data) {
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            resultContent.textContent = JSON.stringify(data, null, 2);
+            resultDiv.style.display = 'block';
+        }
+        
+        function clearResults() {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('status').style.display = 'none';
+        }
+        
+        async function makeRequest(endpoint, method = 'GET', body = null) {
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`
+                }
+            };
+            
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+            
+            try {
+                showStatus('<span class="loading"></span> Realizando petición...', 'info');
+                
+                const response = await fetch(`${API_URL}${endpoint}`, options);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showStatus(`✅ Éxito: ${response.status} ${response.statusText}`, 'success');
+                } else {
+                    showStatus(`⚠️ Error: ${response.status} ${response.statusText}`, 'error');
+                }
+                
+                showResult(data);
+                return data;
+            } catch (error) {
+                showStatus(`❌ Error de conexión: ${error.message}`, 'error');
+                showResult({ error: error.message, stack: error.stack });
+            }
+        }
+        
+        // ==================== TESTS ====================
+        
+        async function testHealth() {
+            await makeRequest('/health');
+        }
+        
+        async function getProjects() {
+            await makeRequest('/projects');
+        }
+        
+        async function createTestProject() {
+            const testProject = {
+                id: 'test_' + Date.now(),
+                name: 'Proyecto Test ' + new Date().toLocaleString(),
+                client: 'Cliente de Prueba',
+                location: 'La Paz',
+                region: 'laPaz',
+                created_at: new Date().toISOString(),
+                device_id: 'web_test',
+                jobs: [
+                    {
+                        id: 'job_' + Date.now(),
+                        work_type_id: 'og_replanteo',
+                        work_type_name: 'Replanteo y Trazado',
+                        quantity: 100,
+                        unit_price: 12.50,
+                        total: 1250.00,
+                        unit: 'm²'
+                    }
+                ]
+            };
+            
+            await makeRequest('/projects', 'POST', testProject);
+        }
+        
+        // ==================== INICIALIZACIÓN ====================
+        
+        window.onload = function() {
+            showStatus('📡 Listo para probar. Presiona un botón para comenzar.', 'info');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "miobrafacil/backend",
+  "description": "Backend API para Mi Obra Fácil",
+  "type": "project",
+  "require": {
+    "php": "^8.0"
+  }
+}
