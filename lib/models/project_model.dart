@@ -1,10 +1,23 @@
+import 'package:hive/hive.dart';
 import 'job_model.dart';
 
-class Project {
+part 'project_model.g.dart';
+
+@HiveType(typeId: 2)
+class Project extends HiveObject {
+  @HiveField(0)
   final String id;
+  
+  @HiveField(1)
   final String projectName;
+  
+  @HiveField(2)
   final String clientName;
+  
+  @HiveField(3)
   final String region;
+  
+  @HiveField(4)
   final List<Job> jobs;
 
   Project({

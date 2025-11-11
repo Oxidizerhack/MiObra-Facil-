@@ -5,6 +5,7 @@ import 'screens/add_project_screen.dart';
 import 'screens/project_detail_screen.dart';
 import 'screens/select_item_screen.dart';
 import 'screens/calculator_screen.dart';
+import 'screens/edit_project_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -27,6 +28,13 @@ final GoRouter router = GoRouter(
             return ProjectDetailScreen(projectId: id);
           },
           routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (BuildContext context, GoRouterState state) {
+                final String id = state.pathParameters['id']!;
+                return EditProjectScreen(projectId: id);
+              },
+            ),
             GoRoute(
               path: 'select_item',
               builder: (BuildContext context, GoRouterState state) {

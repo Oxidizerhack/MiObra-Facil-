@@ -10,6 +10,37 @@ class ProjectDetailScreen extends StatelessWidget {
 
   const ProjectDetailScreen({super.key, required this.projectId});
 
+  void _showDeleteJobDialog(BuildContext context, String projectId, int jobIndex, String jobDescription, ProjectProvider provider) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Confirmar eliminación'),
+          content: Text('¿Estás seguro de que deseas eliminar "$jobDescription"?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                provider.deleteJobFromProject(projectId, jobIndex);
+                Navigator.of(dialogContext).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Partida eliminada exitosamente'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              },
+              child: const Text('Eliminar', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final projectProvider = Provider.of<ProjectProvider>(context);
@@ -25,9 +56,16 @@ class ProjectDetailScreen extends StatelessWidget {
     final grandTotal = project.jobs.fold(0.0, (sum, job) => sum + job.totalCost);
 
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
         title: Text(project.projectName),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              context.go('/project/$projectId/edit');
+            },
+            tooltip: 'Editar Proyecto',
+          ),
           IconButton(
             icon: const Icon(Icons.picture_as_pdf),
             onPressed: () async {
@@ -71,6 +109,18 @@ class ProjectDetailScreen extends StatelessWidget {
                             title: Text(job.workType.description),
                             subtitle: Text(
                                 '${job.dimensions} - ${job.workType.unit} | Costo: ${job.totalCost.toStringAsFixed(2)} Bs'),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                _showDeleteJobDialog(
+                                  context,
+                                  projectId,
+                                  index,
+                                  job.workType.description,
+                                  projectProvider,
+                                );
+                              },
+                            ),
                           ),
                         );
                       },
