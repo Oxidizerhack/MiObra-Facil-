@@ -3,6 +3,12 @@
   "description": "Backend API para Mi Obra Fácil",
   "type": "project",
   "require": {
-    "php": "^8.0"
+    "php": "^8.0",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*"
+  },
+  "require-dev": {},
+  "scripts": {
+    "start": "php -S 0.0.0.0:${PORT:-8080} -t ."
   }
 }
