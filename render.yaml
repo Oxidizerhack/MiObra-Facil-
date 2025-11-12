@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: miobrafacil-api
-    runtime: docker
-    plan: free
-    dockerfilePath: ./Dockerfile
-    envVars:
-      - key: PORT
-        value: "10000"
